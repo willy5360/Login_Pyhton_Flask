@@ -64,7 +64,7 @@ def Register():
         Created_user = new_user.create()
         access_token = create_access_token(identity=Created_user.serialize(), expires_delta = timedelta(minutes=100))
 
-        return jsonify({'token': access_token, 'user': Created_user.serialize()}), 201
+        return jsonify({'token': access_token}), 201
 
     except exc.IntegrityError:
         return jsonify({'error':'can not create new user'}), 400
@@ -85,7 +85,7 @@ def login():
 
     member = Member.get_by_email(login_email)
 
-    if login_email or check_password_hash(member.password, login_password):
+    if login_email and check_password_hash(member.password, login_password):
 
         access_token = create_access_token(identity = member.serialize(), expires_delta= timedelta(minutes=100) )
 
